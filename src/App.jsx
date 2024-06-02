@@ -17,8 +17,8 @@ export const goods = [
 ];
 
 export const App = () => {
-  const [selectedGood, setGood] = useState('Jam');
-  const reset = () => setGood('');
+  const [selectedGood, setSelectedGood] = useState('Jam');
+  const reset = () => setSelectedGood('');
 
   return (
     <main className="section container">
@@ -40,29 +40,32 @@ export const App = () => {
       <table className="table">
         <tbody>
           {goods.map(good => {
-            const queriedGood = selectedGood === good;
+            const isSelectedGood = selectedGood === good;
 
             return (
               <tr
+                key={good}
                 data-cy="Good"
                 className={cn({
-                  'has-background-success-light': queriedGood,
+                  'has-background-success-light': isSelectedGood,
                 })}
               >
                 <td>
                   <button
                     data-cy={cn({
-                      RemoveButton: queriedGood,
-                      AddButton: !queriedGood,
+                      RemoveButton: isSelectedGood,
+                      AddButton: !isSelectedGood,
                     })}
                     type="button"
                     className={cn({
                       button: true,
-                      'is-info': queriedGood,
+                      'is-info': isSelectedGood,
                     })}
-                    onClick={() => (queriedGood ? reset() : setGood(good))}
+                    onClick={() =>
+                      isSelectedGood ? reset() : setSelectedGood(good)
+                    }
                   >
-                    {queriedGood ? '-' : '+'}
+                    {isSelectedGood ? '-' : '+'}
                   </button>
                 </td>
 
