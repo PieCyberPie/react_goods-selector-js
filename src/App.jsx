@@ -1,6 +1,7 @@
 import 'bulma/css/bulma.css';
 import './App.scss';
 import { useState } from 'react';
+import cn from 'classnames';
 
 export const goods = [
   'Dumplings',
@@ -17,25 +18,25 @@ export const goods = [
 
 export const App = () => {
   const [selectedGood, setGood] = useState('Jam');
+  const reset = () => setGood('');
 
   return (
     <main className="section container">
-      {!selectedGood ? (
-        <h1 className="title is-flex is-align-items-center">
-          No goods selected
-        </h1>
-      ) : (
-        <h1 className="title is-flex is-align-items-center">
-          {selectedGood} is selected
-          <button
-            data-cy="ClearButton"
-            type="button"
-            className="delete ml-3"
-            onClick={() => setGood('')}
-          />
-        </h1>
-      )}
-
+      <h1 className="title is-flex is-align-items-center">
+        {!selectedGood ? (
+          'No goods selected'
+        ) : (
+          <>
+            {selectedGood} is selected
+            <button
+              data-cy="ClearButton"
+              type="button"
+              className="delete ml-3"
+              onClick={reset}
+            />
+          </>
+        )}
+      </h1>
       <table className="table">
         <tbody>
           {goods.map(good => {
@@ -44,14 +45,22 @@ export const App = () => {
             return (
               <tr
                 data-cy="Good"
-                className={queriedGood ? 'has-background-success-light' : ''}
+                className={cn({
+                  'has-background-success-light': queriedGood,
+                })}
               >
                 <td>
                   <button
-                    data-cy={queriedGood ? 'RemoveButton' : 'AddButton'}
+                    data-cy={cn({
+                      RemoveButton: queriedGood,
+                      AddButton: !queriedGood,
+                    })}
                     type="button"
-                    className={queriedGood ? 'button is-info' : 'button'}
-                    onClick={() => (queriedGood ? setGood('') : setGood(good))}
+                    className={cn({
+                      button: true,
+                      'is-info': queriedGood,
+                    })}
+                    onClick={() => (queriedGood ? reset() : setGood(good))}
                   >
                     {queriedGood ? '-' : '+'}
                   </button>
